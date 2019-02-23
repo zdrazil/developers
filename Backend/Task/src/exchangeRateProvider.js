@@ -1,4 +1,13 @@
+const axios = require("axios");
+
 const SOURCE_CURRENCY = "CZK";
+const API_URL = "abc";
+// const API_URL =
+//   "http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt";
+
+function fetchData() {
+  return axios.get(API_URL);
+}
 
 function jsonRates(text) {
   const rates = text
@@ -26,19 +35,22 @@ function formatRate({ source, target, exchange }) {
 }
 
 function getExchangeRates(currencies, apiData) {
-  const apiRates = apiData;
-  const formattedApi = jsonRates(apiRates);
-  const stringCurrencies = currencies
-    .filter(a => formattedApi[a])
-    .map(a => {
-      const { exchange, code } = formattedApi[a];
-      return formatRate({
-        exchange,
-        source: code,
-        target: SOURCE_CURRENCY
+  const apiRates = apiData || fetchData();
+
+  return apiRates.then(response => {
+    const formattedApi = jsonRates(response.data);
+    const stringCurrencies = currencies
+      .filter(a => formattedApi[a])
+      .map(a => {
+        const { exchange, code } = formattedApi[a];
+        return formatRate({
+          exchange,
+          source: code,
+          target: SOURCE_CURRENCY
+        });
       });
-    });
-  return stringCurrencies;
+    return stringCurrencies;
+  });
 }
 
 module.exports = {

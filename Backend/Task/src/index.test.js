@@ -34,9 +34,9 @@ test("formats rates info", () => {
 
 const currencies = ["USD", "EUR", "CZK"];
 
-test("returns specified rates:", () => {
-  expect(getExchangeRates(currencies, data)).toEqual([
-    "USD/CZK=22.662",
-    "EUR/CZK=25.665"
-  ]);
-});
+test("returns specified rates:", () =>
+  getExchangeRates(currencies, new Promise(resolve => resolve({ data }))).then(
+    res => {
+      expect(res).toEqual(["USD/CZK=22.662", "EUR/CZK=25.665"]);
+    }
+  ));
