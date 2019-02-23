@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "name": "mews-backend",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/zdrazil/advent-of-code-2018",
+  "author": "Vladimir Zdrazil",
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.15",
+    "@types/ramda": "types/npm-ramda#dist",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3"
+  },
+  "dependencies": {
+    "ramda": "^0.26.1"
+  }
+}
