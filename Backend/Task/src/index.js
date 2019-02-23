@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const provider = require("exchangeRateProvider");
+const { getExchangeRates } = require("./exchangeRateProvider");
 
 const currencies = [
   "USD",
@@ -13,19 +13,24 @@ const currencies = [
   "XYZ"
 ];
 
-try {
-  const rates = provider.getExchangeRates(currencies);
-  console.log(`Successfully retrieved ${rates.length} exchange rates:`);
+function waitForEnter() {
+  console.log("Press any key to exit");
 
-  rates.forEach(rate => {
-    console.log(rate);
-  });
-} catch (err) {
-  console.log(`Could not retrieve exchange rates: ${err}`);
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.on("data", process.exit.bind(process, 0));
 }
 
-console.log("Press any key to exit");
+getExchangeRates(currencies)
+  .then(rates => {
+    console.log(`Successfully retrieved ${rates.length} exchange rates:`);
 
-process.stdin.setRawMode(true);
-process.stdin.resume();
-process.stdin.on("data", process.exit.bind(process, 0));
+    rates.forEach(rate => {
+      console.log(rate);
+    });
+
+    waitForEnter();
+  })
+  .catch(err => {
+    console.log(`Could not retrieve exchange rates: ${err}`);
+  });
