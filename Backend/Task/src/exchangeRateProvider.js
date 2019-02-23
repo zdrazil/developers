@@ -1,9 +1,10 @@
 const axios = require("axios");
 
 const SOURCE_CURRENCY = "CZK";
-const API_URL = "abc";
-// const API_URL =
-//   "http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt";
+const DEBUG = process.env.DEBUG || false;
+const API_URL = DEBUG
+  ? "http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt"
+  : "abc";
 
 function fetchData() {
   return axios.get(API_URL);
