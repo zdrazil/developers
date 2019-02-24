@@ -13,7 +13,7 @@ const currencies = [
   "XYZ"
 ];
 
-function waitForEnter() {
+function waitForKey() {
   console.log("Press any key to exit");
 
   process.stdin.setRawMode(true);
@@ -29,7 +29,7 @@ getExchangeRates(currencies)
       console.log(rate);
     });
 
-    waitForEnter();
+    waitForKey();
   })
   .catch(err => {
     console.log(`Could not retrieve exchange rates: ${err}`);

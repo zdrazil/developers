@@ -2,16 +2,15 @@ const { loadFile } = require("./lib");
 const {
   formatRate,
   getExchangeRates,
-  jsonRates
+  parseRates
 } = require("./exchangeRateProvider");
 
-const data = loadFile();
-
-const rates =
-  "22.02.2019 #38\nzemě|měna|množství|kód|kurz\nAustrálie|dolar|1|AUD|16,122";
-
 test("creates object of rates from a string", () => {
-  expect(jsonRates(rates)).toEqual({
+  expect(
+    parseRates(
+      "22.02.2019 #38\nzemě|měna|množství|kód|kurz\nAustrálie|dolar|1|AUD|16,122"
+    )
+  ).toEqual({
     AUD: {
       amount: 1,
       code: "AUD",
@@ -36,11 +35,12 @@ test("formats rates info", () => {
 const currencies = ["USD", "JPY", "CZK"];
 
 test("returns specified rates:", () =>
-  getExchangeRates(currencies, new Promise(resolve => resolve({ data }))).then(
-    res => {
-      expect(res).toEqual([
-        "USD/CZK/amount:1=22.662",
-        "JPY/CZK/amount:100=20.441"
-      ]);
-    }
-  ));
+  getExchangeRates(
+    currencies,
+    new Promise(resolve => resolve({ data: loadFile() }))
+  ).then(res => {
+    expect(res).toEqual([
+      "USD/CZK/amount:1=22.662",
+      "JPY/CZK/amount:100=20.441"
+    ]);
+  }));
