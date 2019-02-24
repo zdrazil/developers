@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  buildBE:
+    docker:
+      - image: circleci/node:10
+        environment:
+          TERM: xterm
+    steps:
+      - checkout
+      - run: 
+          name: "Setup custom environment variables"
+          command: |
+            echo 'export BE_PATH="Backend/Task/"' >> $BASH_ENV
+      - restore_cache:
+          keys:
+            - v1-deps-build-{{ .Branch }}-{{ checksum "Backend/Task/yarn.lock" }}
+            - v1-deps-build-{{ .Branch }}
+            - v1-deps-build
+      - run: cd ${BE_PATH} && yarn install --frozen-lockfile
+      - save_cache:
+          key: v1-deps-build-{{ .Branch }}-{{ checksum "Backend/Task/yarn.lock" }}
+          paths:
+            - ~/.cache
+      - run: cd ${BE_PATH} && yarn test
+      - run: cd ${BE_PATH} && yarn format && git diff --exit-code
+
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - buildBE
