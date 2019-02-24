@@ -4,10 +4,14 @@ const SOURCE_CURRENCY = "CZK";
 const DEBUG = process.env.DEBUG || false;
 const API_URL = DEBUG
   ? "http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.txt"
-  : "abc";
+  : "none";
 
 function fetchData() {
   return axios.get(API_URL);
+}
+
+function parseNumber(text) {
+  return parseFloat(text.replace(",", "."));
 }
 
 function jsonRates(text) {
@@ -20,19 +24,19 @@ function jsonRates(text) {
       return {
         ...acc,
         [code]: {
-          amount,
+          amount: parseNumber(amount),
           code,
           country,
           currency,
-          exchange: parseFloat(exchange.replace(",", "."))
+          exchange: parseNumber(exchange)
         }
       };
     }, {});
   return rates;
 }
 
-function formatRate({ source, target, exchange }) {
-  return `${source}/${target}=${exchange}`;
+function formatRate({ source, target, exchange, amount }) {
+  return `${source}/${target}/amount:${amount}=${exchange}`;
 }
 
 function getExchangeRates(currencies, apiData) {
@@ -43,11 +47,12 @@ function getExchangeRates(currencies, apiData) {
     const stringCurrencies = currencies
       .filter(a => formattedApi[a])
       .map(a => {
-        const { exchange, code } = formattedApi[a];
+        const { amount, exchange, code } = formattedApi[a];
         return formatRate({
           exchange,
           source: code,
-          target: SOURCE_CURRENCY
+          target: SOURCE_CURRENCY,
+          amount
         });
       });
     return stringCurrencies;

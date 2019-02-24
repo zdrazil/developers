@@ -13,7 +13,7 @@ const rates =
 test("creates object of rates from a string", () => {
   expect(jsonRates(rates)).toEqual({
     AUD: {
-      amount: "1",
+      amount: 1,
       code: "AUD",
       country: "Austrálie",
       currency: "dolar",
@@ -25,18 +25,22 @@ test("creates object of rates from a string", () => {
 test("formats rates info", () => {
   expect(
     formatRate({
+      amount: 2.5,
       exchange: 16.122,
       source: "CZK",
       target: "USD"
     })
-  ).toBe("CZK/USD=16.122");
+  ).toBe("CZK/USD/amount:2.5=16.122");
 });
 
-const currencies = ["USD", "EUR", "CZK"];
+const currencies = ["USD", "JPY", "CZK"];
 
 test("returns specified rates:", () =>
   getExchangeRates(currencies, new Promise(resolve => resolve({ data }))).then(
     res => {
-      expect(res).toEqual(["USD/CZK=22.662", "EUR/CZK=25.665"]);
+      expect(res).toEqual([
+        "USD/CZK/amount:1=22.662",
+        "JPY/CZK/amount:100=20.441"
+      ]);
     }
   ));
