@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "node src/index.js",
+    "format": "prettier --write \"src/**/*.js\" && yarn eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -9,10 +10,8 @@
   "main": "index.js",
   "repository": "https://github.com/zdrazil/advent-of-code-2018",
   "author": "Vladimir Zdrazil",
+  "license": "UNLICENSED",
   "devDependencies": {
-    "@types/jest": "^23.3.10",
-    "@types/node": "^10.12.15",
-    "@types/ramda": "types/npm-ramda#dist",
     "eslint": "^5.10.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.3.0",
@@ -22,7 +21,6 @@
     "prettier": "^1.15.3"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "ramda": "^0.26.1"
+    "axios": "^0.18.0"
   }
 }
