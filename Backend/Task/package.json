@@ -8,7 +8,10 @@
   "name": "mews-backend",
   "version": "0.0.1",
   "main": "index.js",
-  "repository": "https://github.com/zdrazil/advent-of-code-2018",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MewsSystems/sample"
+  },
   "author": "Vladimir Zdrazil",
   "license": "UNLICENSED",
   "devDependencies": {
